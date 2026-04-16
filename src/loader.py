@@ -18,7 +18,6 @@ def load_pdf(file_path: str) -> str:
 
 
 if __name__ == "__main__":
-    # Quick test — put any PDF in the data/ folder and run this file
     text = load_pdf("data/sample.pdf")
-    print(text[:500])  # print first 500 characters
+    print(text[:500])  
     print(f"\nTotal characters extracted: {len(text)}")
