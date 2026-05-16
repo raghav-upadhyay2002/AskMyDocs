@@ -16,7 +16,7 @@ def ask(question, context_chunks):
     context = "\n\n".join(context_chunks)
     prompt = f"Answer the question using only the context below.\n\nContext:\n{context}\n\nQuestion: {question}"
     response = get_client().chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content

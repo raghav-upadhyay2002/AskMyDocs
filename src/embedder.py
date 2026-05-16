@@ -9,4 +9,4 @@ def get_model():
     return _model
 
 def embed(texts):
-    return get_model().encode(texts, convert_to_list=True)
+    return get_model().encode(texts).tolist()
