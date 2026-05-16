@@ -1,0 +1,602 @@
+[
+  {
+    "question": "What is the title of the research paper?",
+    "answer": "A look at advanced learners\u2019 use of mobile devices for English language study: Insights from interview data",
+    "chunk_id": 0
+  },
+  {
+    "question": "Where is the author Mariusz Kruk affiliated?",
+    "answer": "University of Zielona Gora, Poland",
+    "chunk_id": 0
+  },
+  {
+    "question": "How many students participated in the study?",
+    "answer": "20",
+    "chunk_id": 1
+  },
+  {
+    "question": "What type of interview was used to collect data?",
+    "answer": "semi-structured",
+    "chunk_id": 1
+  },
+  {
+    "question": "What are the two uses of mobile devices in the classroom?",
+    "answer": "a rather intuitive and/or ad hoc use, and to reach for suitable tools and retrieve necessary information",
+    "chunk_id": 2
+  },
+  {
+    "question": "What is the topic of the research?",
+    "answer": "Learner autonomy, mobile devices, advanced EFL learners, learning English",
+    "chunk_id": 2
+  },
+  {
+    "question": "What has generated a lot of interest among researchers in recent years?",
+    "answer": "Computers",
+    "chunk_id": 3
+  },
+  {
+    "question": "Why are computers an important and potentially useful addition to language learning?",
+    "answer": "Because they are increasingly more common among learners and offer opportunities such as individualized learning",
+    "chunk_id": 3
+  },
+  {
+    "question": "Who wrote the book in 2011?",
+    "answer": "Benson",
+    "chunk_id": 4
+  },
+  {
+    "question": "In what year did Reinders and White write?",
+    "answer": "2016",
+    "chunk_id": 4
+  },
+  {
+    "question": "Who argued that individuals need to be increasingly adept at critical adaptive learning?",
+    "answer": "Reinders and White",
+    "chunk_id": 5
+  },
+  {
+    "question": "What should contemporary language teachers equip foreign/second language learners with?",
+    "answer": "appropriate knowledge concerning the affordances of mobile devices for language",
+    "chunk_id": 5
+  },
+  {
+    "question": "What should researchers and practitioners prepare for effective usage of mobile devices for language study?",
+    "answer": "the affordances of mobile devices",
+    "chunk_id": 6
+  },
+  {
+    "question": "What devices play a role in the contexts of language learners' organization of their own learning experiences and environments?",
+    "answer": "smartphones and tablets",
+    "chunk_id": 6
+  },
+  {
+    "question": "What is the purpose of the study reported in this article?",
+    "answer": "The study investigated ways advanced English language students use their mobile devices for their language learning.",
+    "chunk_id": 7
+  },
+  {
+    "question": "What type of devices do the students use for language learning?",
+    "answer": "Smartphones and tablet computers",
+    "chunk_id": 7
+  },
+  {
+    "question": "What is the focus of attention for many researchers and practitioners?",
+    "answer": "autonomy in second/foreign language learning and teaching",
+    "chunk_id": 8
+  },
+  {
+    "question": "Who introduced the notion of autonomy?",
+    "answer": "Benson",
+    "chunk_id": 8
+  },
+  {
+    "question": "Who popularized the notion of autonomy in 1981?",
+    "answer": "Henri Holec",
+    "chunk_id": 9
+  },
+  {
+    "question": "In what year was the notion of autonomy introduced?",
+    "answer": "1981",
+    "chunk_id": 9
+  },
+  {
+    "question": "What is autonomy according to Benson (2001)?",
+    "answer": "the capacity to take control of one\u2019s own learning",
+    "chunk_id": 10
+  },
+  {
+    "question": "What does Benson (2011) say about the nature of autonomy?",
+    "answer": "it is multidimensional and takes many different forms",
+    "chunk_id": 10
+  },
+  {
+    "question": "What are the roots of learner autonomy based on?",
+    "answer": "political, societal and educational developments",
+    "chunk_id": 11
+  },
+  {
+    "question": "What do autonomous learners always do for themselves?",
+    "answer": "things for themselves",
+    "chunk_id": 11
+  },
+  {
+    "question": "What is one of the capacities that language learners develop?",
+    "answer": "analyze, reflect upon and synthesize information",
+    "chunk_id": 12
+  },
+  {
+    "question": "What is no longer predominantly a matter of individualizing learning?",
+    "answer": "fostering autonomy",
+    "chunk_id": 12
+  },
+  {
+    "question": "Who are autonomous learners according to Littlewood?",
+    "answer": "one",
+    "chunk_id": 13
+  },
+  {
+    "question": "What does Benson (2011) claim about autonomous language learning?",
+    "answer": "it is more effective than non-autonomous language learning",
+    "chunk_id": 13
+  },
+  {
+    "question": "What are the two major components that an autonomous learner's capacity depends on?",
+    "answer": "ability and willingness",
+    "chunk_id": 14
+  },
+  {
+    "question": "What does ability depend on for an autonomous learner?",
+    "answer": "having knowledge about the options and skills to choose the most suitable alternatives",
+    "chunk_id": 14
+  },
+  {
+    "question": "What is necessary for an individual to be successful in being autonomous?",
+    "answer": "all of these components have to be present all together",
+    "chunk_id": 15
+  },
+  {
+    "question": "Who argues that all components have to be present for an individual to be successful in being autonomous?",
+    "answer": "Littlewood",
+    "chunk_id": 15
+  },
+  {
+    "question": "Who defines autonomous language learning?",
+    "answer": "Reinders (2011)",
+    "chunk_id": 16
+  },
+  {
+    "question": "What does Reinders (2011) mean by autonomy?",
+    "answer": "It is not an either-or concept",
+    "chunk_id": 16
+  },
+  {
+    "question": "According to Reinders, is autonomy permanent?",
+    "answer": "No",
+    "chunk_id": 17
+  },
+  {
+    "question": "In what year did Reinders publish his work?",
+    "answer": "2011",
+    "chunk_id": 17
+  },
+  {
+    "question": "When did the field of learner autonomy start to be influenced by technology?",
+    "answer": "the mid-1990s",
+    "chunk_id": 18
+  },
+  {
+    "question": "What has been one of the most researched areas in the field of second/foreign language learning and teaching over the last few decades?",
+    "answer": "the concept of autonomy",
+    "chunk_id": 18
+  },
+  {
+    "question": "Who stated that the latest generations of new technologies have a bearing on the way autonomous language learning develops?",
+    "answer": "Benson and Chik",
+    "chunk_id": 19
+  },
+  {
+    "question": "What is one of the most important benefits of implementing new technologies into language learning?",
+    "answer": "They provide occasions for language",
+    "chunk_id": 19
+  },
+  {
+    "question": "What allows language learners to bypass classrooms and access target language texts and users?",
+    "answer": "the internet and social media",
+    "chunk_id": 20
+  },
+  {
+    "question": "What technologies can assist language learners in accessing target language texts and users?",
+    "answer": "smartphones and tablet computers",
+    "chunk_id": 20
+  },
+  {
+    "question": "What can language learning apps assist learners with?",
+    "answer": "their learning endeavors",
+    "chunk_id": 21
+  },
+  {
+    "question": "What might language involvement comprise, according to Jones?",
+    "answer": "the use of chunks of spare time for language practice, searching for target language vocabulary in relevant contexts or interactions on social media",
+    "chunk_id": 21
+  },
+  {
+    "question": "What is the opportunity that a language learner has by having a mobile device?",
+    "answer": "to take control of his or her learning, direct it and engage in language activities that meet his or her individual needs and goals",
+    "chunk_id": 22
+  },
+  {
+    "question": "What is the potential role of mobile devices in language learning?",
+    "answer": "autonomous language learning",
+    "chunk_id": 22
+  },
+  {
+    "question": "What is the term mobile learning defined as by some researchers?",
+    "answer": "an extension of e-learning built upon mobile devices",
+    "chunk_id": 23
+  },
+  {
+    "question": "What is mobile learning defined as by some other researchers?",
+    "answer": "learning that happens anywhere and anytime",
+    "chunk_id": 23
+  },
+  {
+    "question": "What is a device that can be used for educational purposes and is small, autonomous and unobtrusive?",
+    "answer": "Any device that is small, autonomous and unobtrusive enough to accompany us in every moment",
+    "chunk_id": 24
+  },
+  {
+    "question": "What types of devices can be comfortably carried around in a pocket or bag?",
+    "answer": "MP3 players, digital recorders, e-readers, tablets, and smartphones",
+    "chunk_id": 24
+  },
+  {
+    "question": "What has a lot of studies been published about?",
+    "answer": "the use of mobile technology and mobile devices in language learning",
+    "chunk_id": 25
+  },
+  {
+    "question": "What did the findings of these studies concentrate on?",
+    "answer": "language learners\u2019 views on the use of mobile devices in language instruction",
+    "chunk_id": 25
+  },
+  {
+    "question": "What is the year mentioned in the text?",
+    "answer": "2014",
+    "chunk_id": 26
+  },
+  {
+    "question": "What is one of the topics mentioned in the text?",
+    "answer": "distance language learning",
+    "chunk_id": 26
+  },
+  {
+    "question": "What type of instruction was discussed in relation to mobile learning?",
+    "answer": "second/foreign language instruction",
+    "chunk_id": 27
+  },
+  {
+    "question": "Who offered guidelines related to the implementation of mobile learning?",
+    "answer": "Kukuls",
+    "chunk_id": 27
+  },
+  {
+    "question": "What is the name of the journal where Reinders and White published their critical overview?",
+    "answer": "Language Learning & Technology (LLT)",
+    "chunk_id": 28
+  },
+  {
+    "question": "What is the title of the EUROCALL Review volume mentioned in the text?",
+    "answer": "Volume 25, No. 2",
+    "chunk_id": 28
+  },
+  {
+    "question": "What is the purpose of developing learning experiences for language learners?",
+    "answer": "to reach their aims and meet their needs",
+    "chunk_id": 29
+  },
+  {
+    "question": "What type of technology is ubiquitous and substantial in language learners' everyday life?",
+    "answer": "mobile technology",
+    "chunk_id": 29
+  },
+  {
+    "question": "What is the main question posed in this study?",
+    "answer": "Do students engage with their mobile devices to develop learning experiences that meet their needs and goals as English language learners?",
+    "chunk_id": 30
+  },
+  {
+    "question": "What is the purpose of the study for English language learners?",
+    "answer": "The development of the target language skills and sub-skills",
+    "chunk_id": 30
+  },
+  {
+    "question": "How many participants were in the second year of their MA program?",
+    "answer": "5",
+    "chunk_id": 31
+  },
+  {
+    "question": "What was the average age of the study participants?",
+    "answer": "22.22",
+    "chunk_id": 31
+  },
+  {
+    "question": "How many years of English did the participants study on average?",
+    "answer": "11.38 years",
+    "chunk_id": 32
+  },
+  {
+    "question": "What proficiency level did second year MA students have?",
+    "answer": "C1 and C2",
+    "chunk_id": 32
+  },
+  {
+    "question": "How were the data gathered?",
+    "answer": "by means of a semi-structured interview",
+    "chunk_id": 33
+  },
+  {
+    "question": "What type of interview was chosen?",
+    "answer": "semi-structured interview",
+    "chunk_id": 33
+  },
+  {
+    "question": "What was the purpose of the researcher's questions during the interview?",
+    "answer": "To encourage the subjects to describe their learning experiences concerning the use of mobile devices for English study",
+    "chunk_id": 34
+  },
+  {
+    "question": "What form did the researcher's questions take during the interview?",
+    "answer": "A form of introspection",
+    "chunk_id": 34
+  },
+  {
+    "question": "What were the study participants informed about?",
+    "answer": "the use of mobile devices for English study",
+    "chunk_id": 35
+  },
+  {
+    "question": "What were the participants asked for permission to be?",
+    "answer": "digitally recorded",
+    "chunk_id": 35
+  },
+  {
+    "question": "Do you use your mobile device(s) during classes?",
+    "answer": "Yes",
+    "chunk_id": 36
+  },
+  {
+    "question": "Has the use of your mobile device(s) increased or decreased since that time?",
+    "answer": "increased/decreased",
+    "chunk_id": 36
+  },
+  {
+    "question": "Do you organize regular formal or informal mobile English language learning sessions?",
+    "answer": "Yes",
+    "chunk_id": 37
+  },
+  {
+    "question": "Do you feel that thanks to the use of your mobile device(s) you devote more time for learning the English language?",
+    "answer": "Yes",
+    "chunk_id": 37
+  },
+  {
+    "question": "What type of analysis was done on the gathered data?",
+    "answer": "qualitative and quantitative analysis",
+    "chunk_id": 38
+  },
+  {
+    "question": "What program was used for partial transcription of the data?",
+    "answer": "Microsoft Word 2016",
+    "chunk_id": 38
+  },
+  {
+    "question": "How did the researcher analyze the data?",
+    "answer": "quantitatively",
+    "chunk_id": 39
+  },
+  {
+    "question": "What tool did the researcher use to highlight the text?",
+    "answer": "the highlighting function of the word processor program",
+    "chunk_id": 39
+  },
+  {
+    "question": "What type of analysis was involved in counting the number of interviewees' responses?",
+    "answer": "calculating percentages",
+    "chunk_id": 40
+  },
+  {
+    "question": "What thematic categories were found in the data analysis?",
+    "answer": "usage of mobile devices, reasons for using mobile devices, resources and tools, mobile encounters, language practiced and study performance",
+    "chunk_id": 40
+  },
+  {
+    "question": "What percentage of the subjects started using their mobile devices at university?",
+    "answer": "55%",
+    "chunk_id": 41
+  },
+  {
+    "question": "How long, on average, had the participants been using their mobile devices for English language study?",
+    "answer": "3.80 years",
+    "chunk_id": 41
+  },
+  {
+    "question": "What percentage of students claimed not to be very skilful in using their mobile devices for English language learning?",
+    "answer": "45%",
+    "chunk_id": 42
+  },
+  {
+    "question": "What percentage of students regarded themselves as experienced or fairly experienced users of their mobile devices for English language learning?",
+    "answer": "55%",
+    "chunk_id": 42
+  },
+  {
+    "question": "What is the level of study of the student in S1?",
+    "answer": "B.A.",
+    "chunk_id": 43
+  },
+  {
+    "question": "How many years of experience does the student in S5 have with MobDs?",
+    "answer": "3 years",
+    "chunk_id": 43
+  },
+  {
+    "question": "What is the gender of the person in S6?",
+    "answer": "male",
+    "chunk_id": 44
+  },
+  {
+    "question": "How long has the person in S10 been experienced with a smartphone?",
+    "answer": "5 years",
+    "chunk_id": 44
+  },
+  {
+    "question": "What is the gender of S13?",
+    "answer": "female",
+    "chunk_id": 45
+  },
+  {
+    "question": "How many years of experience does S17 have?",
+    "answer": "6",
+    "chunk_id": 45
+  },
+  {
+    "question": "What is the reason for using mobile devices in the study?",
+    "answer": "convenient, fast and always ready to use",
+    "chunk_id": 46
+  },
+  {
+    "question": "What is one of the benefits of using mobile devices for study?",
+    "answer": "quick access to the internet",
+    "chunk_id": 46
+  },
+  {
+    "question": "Why is the main aspect of the resource convenient?",
+    "answer": "convenience",
+    "chunk_id": 47
+  },
+  {
+    "question": "What can be accessed through the smartphone's internet all the time?",
+    "answer": "needed information",
+    "chunk_id": 47
+  },
+  {
+    "question": "What is the benefit of using a smartphone as a dictionary?",
+    "answer": "You don't have to waste time thumbing through a lot of pages to find words you're looking for.",
+    "chunk_id": 48
+  },
+  {
+    "question": "What can be stored on the tablet?",
+    "answer": "Study materials and documents.",
+    "chunk_id": 48
+  },
+  {
+    "question": "What were the most frequently used language tools by the students?",
+    "answer": "online dictionaries (e.g. diki, ColorDict Dictionary) and mobile apps, such as Google Translate, Duolingo and Fiszkoteka",
+    "chunk_id": 49
+  },
+  {
+    "question": "Why did the students usually access these language tools?",
+    "answer": "to check, revise and learn the target language vocabulary",
+    "chunk_id": 49
+  },
+  {
+    "question": "What are some online resources students use to practice reading and listening skills?",
+    "answer": "TED, online newspapers, YouTube",
+    "chunk_id": 50
+  },
+  {
+    "question": "What is an example of a vocabulary resource mentioned by students?",
+    "answer": "6 Minute English",
+    "chunk_id": 50
+  },
+  {
+    "question": "What do some students use to read language materials downloaded from the internet?",
+    "answer": "MobDs",
+    "chunk_id": 51
+  },
+  {
+    "question": "What app does S10 use for instant messaging?",
+    "answer": "WhatsApp Messenger",
+    "chunk_id": 51
+  },
+  {
+    "question": "What do you use the app Fiszkoteka for?",
+    "answer": "to practice listening and learn vocabulary",
+    "chunk_id": 52
+  },
+  {
+    "question": "Why do you use the app Fiszkoteka?",
+    "answer": "because vocabulary is used in a variety of contexts",
+    "chunk_id": 52
+  },
+  {
+    "question": "What percentage of students used their smartphones in their leisure time?",
+    "answer": "30%",
+    "chunk_id": 53
+  },
+  {
+    "question": "What did some students use their smartphones for in their leisure time?",
+    "answer": "reading English texts, listening to audio resources, checking and learning new vocabulary, preparing multimedia presentations and playing language games",
+    "chunk_id": 53
+  },
+  {
+    "question": "What did learners use their MobDs to check in class?",
+    "answer": "target language vocabulary",
+    "chunk_id": 54
+  },
+  {
+    "question": "What did learners who used their MobDs most frequently in class use them for?",
+    "answer": "to check unfamiliar vocabulary",
+    "chunk_id": 54
+  },
+  {
+    "question": "What do students use their MobDs for during language activities?",
+    "answer": "to check unfamiliar vocabulary and/or find words they needed",
+    "chunk_id": 55
+  },
+  {
+    "question": "Why do some students not use their MobDs at home?",
+    "answer": "because they favored their home computers",
+    "chunk_id": 55
+  },
+  {
+    "question": "What device do you use to check words and collocations during classes?",
+    "answer": "smartphone and tablet",
+    "chunk_id": 56
+  },
+  {
+    "question": "Why do you check English words in digital dictionaries during practical English language classes?",
+    "answer": "to check words, spelling, or to recall some words",
+    "chunk_id": 56
+  },
+  {
+    "question": "How do people usually find synonyms?",
+    "answer": "I use my smartphone to look for synonyms.",
+    "chunk_id": 57
+  },
+  {
+    "question": "What percentage of interviewees used their smartphones for informal English learning?",
+    "answer": "65%",
+    "chunk_id": 57
+  },
+  {
+    "question": "How often do S10's friends chat?",
+    "answer": "three times a week",
+    "chunk_id": 58
+  },
+  {
+    "question": "How often does S10 arrange chats with friends?",
+    "answer": "pretty regularly",
+    "chunk_id": 58
+  },
+  {
+    "question": "Where do the interviewees use YouTube?",
+    "answer": "through my smartphone",
+    "chunk_id": 59
+  },
+  {
+    "question": "Did the teachers explicitly advise the use of mobile devices?",
+    "answer": "no",
+    "chunk_id": 59
+  }
+]
