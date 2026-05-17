@@ -6,6 +6,7 @@ CI will fail the build if this script exits with code 1.
 import json
 import os
 import sys
+import time
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from src.pipeline import ingest, query
@@ -63,6 +64,7 @@ def run():
             **scores,
         })
         print(f"  [{i+1}/{len(samples)}] faithfulness={scores['faithfulness']:.2f} relevance={scores['relevance']:.2f}")
+        time.sleep(5)
 
     # Aggregate
     avg_faithfulness = sum(r["faithfulness"] for r in results) / len(results)

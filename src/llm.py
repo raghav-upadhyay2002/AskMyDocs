@@ -1,5 +1,6 @@
 import os
-from groq import Groq
+import time
+from groq import Groq, RateLimitError
 from dotenv import load_dotenv
 from src.prompts import PROMPTS, DEFAULT_PROMPT
 
@@ -29,11 +30,18 @@ def ask(question, context_chunks, prompt_name=DEFAULT_PROMPT):
     template = PROMPTS[prompt_name]
     prompt = template.format(context=context, question=question)
 
-    response = get_client().chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.1,  # low temperature reduces hallucination
-    )
+    for attempt in range(5):
+        try:
+            response = get_client().chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+            )
+            break
+        except RateLimitError:
+            if attempt == 4:
+                raise
+            time.sleep(5 * (attempt + 1))
     answer = response.choices[0].message.content
 
     if not _is_grounded(answer, context_chunks):
