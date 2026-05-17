@@ -6,6 +6,8 @@ answer_relevance    — does the answer address the question?
 citation_rate       — what % of answers include citations?
 """
 import re
+import time
+from groq import RateLimitError
 from src.llm import get_client
 
 
@@ -27,11 +29,18 @@ Question: {question}
 Context: {context}
 Answer: {answer}
 """
-    response = get_client().chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-    )
+    for attempt in range(5):
+        try:
+            response = get_client().chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.0,
+            )
+            break
+        except RateLimitError:
+            if attempt == 4:
+                raise
+            time.sleep(5 * (attempt + 1))
     raw = response.choices[0].message.content.strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]
