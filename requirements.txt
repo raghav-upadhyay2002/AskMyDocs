@@ -4,3 +4,4 @@ chromadb
 groq
 python-dotenv
 rank-bm25
+gradio>=5.0.0

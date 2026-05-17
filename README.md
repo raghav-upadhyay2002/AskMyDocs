@@ -1,6 +1,21 @@
+---
+title: AskMyDocs
+emoji: 📄
+colorFrom: purple
+colorTo: blue
+sdk: gradio
+sdk_version: 5.29.1
+app_file: app.py
+pinned: false
+---
+
 # AskMyDocs — RAG Q&A System
 
+[![Live Demo](https://img.shields.io/badge/🤗%20Hugging%20Face-Live%20Demo-blue)](https://huggingface.co/spaces/raghavupadhyay/askmydocs)
+
 Ask questions about any PDF and get answers with citations pulled directly from the document.
+
+> **Try it live →** https://huggingface.co/spaces/raghavupadhyay/askmydocs
 
 ## Features
 
