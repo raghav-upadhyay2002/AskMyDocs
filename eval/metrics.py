@@ -58,5 +58,6 @@ def evaluate_sample(question, answer, context_chunks):
             "faithfulness": float(scores.get("faithfulness", 0)),
             "relevance": float(scores.get("relevance", 0)),
         }
-    except Exception:
+    except Exception as e:
+        print(f"    [judge error] {type(e).__name__}: {e}")
         return {"faithfulness": 0.0, "relevance": 0.0}

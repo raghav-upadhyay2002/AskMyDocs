@@ -38,23 +38,26 @@ def _normalize(scores):
 def search(query_embedding, query_text, n_results=10):
     col = get_collection()
 
-    # Vector search — retrieve more candidates for reranking
+    # Vector search
     vector_results = col.query(query_embeddings=[query_embedding], n_results=n_results)
-    vector_docs = vector_results["documents"][0]
     vector_ids = [int(i) for i in vector_results["ids"][0]]
     vector_distances = vector_results["distances"][0]
-    # ChromaDB returns distances (lower = better), convert to similarity
-    vector_scores = _normalize([-d for d in vector_distances])
+    vector_scores_raw = _normalize([-d for d in vector_distances])
 
-    # BM25 search over all chunks
+    # BM25 search over ALL chunks — take top n_results
     bm25_scores_all = _bm25.get_scores(query_text.lower().split())
-    # Get BM25 scores only for the vector-retrieved chunks
-    bm25_scores = _normalize([bm25_scores_all[i] for i in vector_ids])
+    bm25_top_ids = sorted(range(len(bm25_scores_all)), key=lambda i: bm25_scores_all[i], reverse=True)[:n_results]
+    bm25_scores_norm = _normalize(list(bm25_scores_all))
 
-    # Combine: 60% vector, 40% BM25
+    # Union of vector and BM25 candidate IDs
+    candidate_ids = list({*vector_ids, *bm25_top_ids})
+
     combined = {}
-    for idx, doc, vscore, bscore in zip(vector_ids, vector_docs, vector_scores, bm25_scores):
-        combined[idx] = {"doc": doc, "score": 0.6 * vscore + 0.4 * bscore}
+    vector_score_map = dict(zip(vector_ids, vector_scores_raw))
+    for idx in candidate_ids:
+        vscore = vector_score_map.get(idx, 0.0)
+        bscore = bm25_scores_norm[idx]
+        combined[idx] = {"doc": _all_chunks[idx], "score": 0.6 * vscore + 0.4 * bscore}
 
     ranked = sorted(combined.values(), key=lambda x: x["score"], reverse=True)
-    return [item["doc"] for item in ranked]
+    return [item["doc"] for item in ranked[:n_results]]
