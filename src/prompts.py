@@ -35,4 +35,4 @@ Question: {question}
 Answer:""",
 }
 
-DEFAULT_PROMPT = "default"
+DEFAULT_PROMPT = "strict"
