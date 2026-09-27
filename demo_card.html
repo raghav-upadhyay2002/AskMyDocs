@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AskMyDocs Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0f0f13;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .card {
+    width: 820px;
+    background: #16161e;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #2a2a3a;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+
+  /* Header bar */
+  .header {
+    background: linear-gradient(135deg, #1e1e2e 0%, #1a1a2e 100%);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #2a2a3a;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .app-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: -0.3px;
+  }
+
+  .app-tagline {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 1px;
+  }
+
+  .badge {
+    background: linear-gradient(135deg, #7c3aed22, #4f46e522);
+    border: 1px solid #7c3aed55;
+    color: #a78bfa;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    padding: 16px 28px;
+    gap: 0;
+    background: #12121a;
+    border-bottom: 1px solid #2a2a3a;
+  }
+
+  .stat {
+    flex: 1;
+    text-align: center;
+    padding: 6px 0;
+  }
+
+  .stat:not(:last-child) {
+    border-right: 1px solid #2a2a3a;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: #4a5568;
+    margin-top: 2px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  /* QA section */
+  .qa-section {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .qa-block {
+    background: #1e1e2e;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #2a2a3a;
+  }
+
+  .question-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #1a1a28;
+    border-bottom: 1px solid #2a2a3a;
+  }
+
+  .q-icon {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .question-text {
+    font-size: 13.5px;
+    color: #c4b5fd;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .answer-row {
+    padding: 14px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .a-icon {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #059669, #10b981);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .answer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .cite {
+    display: inline-block;
+    background: linear-gradient(135deg, #1d4ed822, #7c3aed22);
+    border: 1px solid #3b82f655;
+    color: #60a5fa;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 5px;
+    margin: 0 1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Tech stack footer */
+  .footer {
+    padding: 16px 28px;
+    background: #12121a;
+    border-top: 1px solid #2a2a3a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .stack-label {
+    font-size: 11px;
+    color: #4a5568;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 10px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+  }
+
+  .tag-purple { background: #7c3aed22; border: 1px solid #7c3aed44; color: #a78bfa; }
+  .tag-blue   { background: #1d4ed822; border: 1px solid #1d4ed844; color: #60a5fa; }
+  .tag-green  { background: #05966922; border: 1px solid #05966944; color: #34d399; }
+  .tag-orange { background: #d9770622; border: 1px solid #d9770644; color: #fb923c; }
+  .tag-pink   { background: #db277722; border: 1px solid #db277744; color: #f472b6; }
+
+  .github-link {
+    font-size: 12px;
+    color: #4a5568;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">📄</div>
+      <div>
+        <div class="app-name">AskMyDocs</div>
+        <div class="app-tagline">RAG-powered PDF question answering</div>
+      </div>
+    </div>
+    <div class="badge">✦ Live Demo</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">77%</div>
+      <div class="stat-label">Faithfulness</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">88%</div>
+      <div class="stat-label">Relevance</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">90%</div>
+      <div class="stat-label">Citation Rate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">94</div>
+      <div class="stat-label">Chunks Indexed</div>
+    </div>
+  </div>
+
+  <!-- Q&A -->
+  <div class="qa-section">
+
+    <div class="qa-block">
+      <div class="question-row">
+        <div class="q-icon">💬</div>
+        <div class="question-text">What is the title of the research paper?</div>
+      </div>
+      <div class="answer-row">
+        <div class="a-icon">✦</div>
+        <div class="answer-text">
+          A look at advanced learners' use of mobile devices for English language study:
+          Insights from interview data <span class="cite">[1]</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question-row">
+        <div class="q-icon">💬</div>
+        <div class="question-text">What is the purpose of this study?</div>
+      </div>
+      <div class="answer-row">
+        <div class="a-icon">✦</div>
+        <div class="answer-text">
+          The purpose of this study is to encourage the subjects to describe their learning
+          experiences concerning the use of mobile devices for English study <span class="cite">[1]</span>.
+          This form of introspection aimed to prompt students to examine their behaviors
+          and provide a first-person narrative of such experiences <span class="cite">[1]</span>.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="tags">
+      <span class="stack-label">Stack</span>
+      <span class="tag tag-purple">RAG Pipeline</span>
+      <span class="tag tag-blue">ChromaDB</span>
+      <span class="tag tag-green">BM25 + Vector</span>
+      <span class="tag tag-orange">Groq LLaMA 3.1</span>
+      <span class="tag tag-pink">CI/CD Eval</span>
+    </div>
+    <div class="github-link">⭐ github.com/raghav-upadhyay2002/AskMyDocs</div>
+  </div>
+
+</div>
+</body>
+</html>

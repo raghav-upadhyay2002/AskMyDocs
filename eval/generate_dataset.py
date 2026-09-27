@@ -7,9 +7,9 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from src.loader import import_file
-from src.chunker import chunk_text
-from src.llm import get_client
+from src.loader import load_pages
+from src.chunker import chunk_pages
+from src.llm import chat
 
 PDF_PATH = "data/sample.pdf"
 OUTPUT_PATH = "eval/dataset.json"
@@ -29,12 +29,7 @@ Return ONLY the JSON array, no explanation.
 Chunk:
 {chunk}
 """
-    response = get_client().chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.3,
-    )
-    raw = response.choices[0].message.content.strip()
+    raw = chat(prompt, temperature=0.3)
     # Strip markdown code fences if present
     if raw.startswith("```"):
         raw = raw.split("```")[1]
@@ -45,8 +40,7 @@ Chunk:
 
 def main():
     print(f"Loading {PDF_PATH}...")
-    text = import_file(PDF_PATH)
-    chunks = chunk_text(text)
+    chunks = [c["text"] for c in chunk_pages(load_pages(PDF_PATH))]
     chunks = chunks[:MAX_CHUNKS]
     print(f"Generating Q&A from {len(chunks)} chunks...")
 

@@ -5,15 +5,14 @@ faithfulness_score  — is the answer grounded in retrieved chunks?
 answer_relevance    — does the answer address the question?
 citation_rate       — what % of answers include citations?
 """
+import json
 import re
-import time
-from groq import RateLimitError
-from src.llm import get_client
+from src.llm import chat, cited_numbers
 
 
 def citation_rate(answers):
     """Fraction of answers that contain at least one citation like [1]."""
-    cited = sum(1 for a in answers if re.search(r"\[\d+\]", a))
+    cited = sum(1 for a in answers if cited_numbers(a))
     return cited / len(answers) if answers else 0.0
 
 
@@ -29,25 +28,10 @@ Question: {question}
 Context: {context}
 Answer: {answer}
 """
-    for attempt in range(5):
-        try:
-            response = get_client().chat.completions.create(
-                model="llama-3.1-8b-instant",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.0,
-            )
-            break
-        except RateLimitError:
-            if attempt == 4:
-                raise
-            time.sleep(5 * (attempt + 1))
-    raw = response.choices[0].message.content.strip()
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    import json
-    return json.loads(raw.strip())
+    raw = chat(prompt, temperature=0.0)
+    # Tolerate code fences or stray text around the JSON object
+    match = re.search(r"\{.*\}", raw, re.DOTALL)
+    return json.loads(match.group(0) if match else raw)
 
 
 def evaluate_sample(question, answer, context_chunks):

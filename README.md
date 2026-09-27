@@ -4,7 +4,7 @@ emoji: 📄
 colorFrom: purple
 colorTo: blue
 sdk: gradio
-sdk_version: 5.29.1
+sdk_version: 6.28.0
 app_file: app.py
 pinned: false
 ---
@@ -13,7 +13,7 @@ pinned: false
 
 [![Live Demo](https://img.shields.io/badge/🤗%20Hugging%20Face-Live%20Demo-blue)](https://huggingface.co/spaces/raghavupadhyay/askmydocs)
 
-Ask questions about any PDF and get answers with citations pulled directly from the document.
+Ask questions about any PDF and get answers with citations pulled directly from the document — each one linked to the page it came from.
 
 > **Try it live →** https://huggingface.co/spaces/raghavupadhyay/askmydocs
 
@@ -21,9 +21,11 @@ Ask questions about any PDF and get answers with citations pulled directly from 
 
 - **Hybrid search** — combines vector similarity (60%) and BM25 keyword matching (40%) for better retrieval
 - **Reranking** — cross-encoder model re-scores top candidates before sending to the LLM
-- **Citation enforcement** — every answer references the exact chunks it was derived from
+- **Citation enforcement** — every answer references the exact chunks it was derived from, with page numbers
 - **Hallucination detection** — answers without citations are flagged automatically
 - **Prompt versioning** — swap between `default`, `strict`, and `concise` prompt styles
+- **Web app** — chat UI with expandable sources; each browser session gets its own document index
+- **Swappable LLM** — any Groq chat model via the `GROQ_MODEL` env var (default `openai/gpt-oss-20b`)
 - **Evaluation system** — automated quality checks with faithfulness, relevance, and citation rate metrics
 - **CI pipeline** — GitHub Actions fails the build if quality drops below thresholds
 
@@ -32,12 +34,12 @@ Ask questions about any PDF and get answers with citations pulled directly from 
 ```
 askmydocs/
 ├── src/
-│   ├── loader.py        # PDF → raw text
-│   ├── chunker.py       # raw text → overlapping chunks
+│   ├── loader.py        # PDF → text per page
+│   ├── chunker.py       # pages → overlapping chunks tagged with page numbers
 │   ├── embedder.py      # chunks → vectors (all-MiniLM-L6-v2)
-│   ├── vectorstore.py   # hybrid search: ChromaDB + BM25
+│   ├── vectorstore.py   # HybridIndex: ChromaDB + BM25, one per document
 │   ├── reranker.py      # cross-encoder reranking
-│   ├── llm.py           # Groq LLaMA with citations + hallucination check
+│   ├── llm.py           # Groq LLM with citations + hallucination check
 │   ├── prompts.py       # versioned prompt templates
 │   └── pipeline.py      # orchestrates ingestion + query
 ├── eval/
@@ -48,7 +50,8 @@ askmydocs/
 │   └── workflows/
 │       └── eval.yml     # CI pipeline
 ├── data/                # put your PDFs here
-├── main.py              # entry point
+├── app.py               # Gradio web app (also runs the Hugging Face Space)
+├── main.py              # command-line example
 ├── requirements.txt
 └── .env                 # your API key (never commit this)
 ```
@@ -56,23 +59,31 @@ askmydocs/
 ## Setup
 
 ```bash
-# 1. Install dependencies
+# 1. Create a virtualenv and install dependencies (Python 3.10+)
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # 2. Get a free Groq API key at console.groq.com
 echo "GROQ_API_KEY=your_key_here" > .env
 
-# 3. Put a PDF in the data/ folder and update PDF_PATH in main.py
+# 3a. Run the web app → http://127.0.0.1:7860
+python app.py
 
-# 4. Run
+# 3b. …or the command-line example (edit PDF_PATH in main.py)
 python main.py
+```
+
+Groq retires models from time to time. If answers start failing with a "model not found" error, pick a current model from [console.groq.com/docs/models](https://console.groq.com/docs/models) and set it — no code change needed:
+
+```bash
+echo "GROQ_MODEL=openai/gpt-oss-120b" >> .env
 ```
 
 ## How it works
 
 **Ingestion (run once per document):**
 ```
-PDF → extract text → split into 500-char chunks (50-char overlap)
+PDF → extract text per page → split into 500-char chunks (50-char overlap)
     → embed each chunk → store in ChromaDB + BM25 index
 ```
 
@@ -80,7 +91,7 @@ PDF → extract text → split into 500-char chunks (50-char overlap)
 ```
 Question → embed → hybrid search (vector + BM25) → top 10 candidates
          → rerank with cross-encoder → top 3 chunks
-         → send to LLaMA with citation prompt → answer
+         → send to the LLM with citation prompt → answer + sources (with page numbers)
 ```
 
 ## Prompt versions

@@ -1,7 +1,7 @@
-pymupdf
-sentence-transformers
-chromadb
-groq
-python-dotenv
-rank-bm25
-gradio>=5.0.0
+pymupdf>=1.28,<2
+sentence-transformers>=6.1,<7
+chromadb>=1.5,<2
+groq>=1.7,<2
+python-dotenv>=1.2,<2
+rank-bm25>=0.2.2,<0.3
+gradio>=6.28,<7

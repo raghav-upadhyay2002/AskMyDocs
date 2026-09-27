@@ -2,7 +2,7 @@ from src.pipeline import ingest, query
 
 PDF_PATH = "data/sample.pdf"
 
-ingest(PDF_PATH)
+index = ingest(PDF_PATH)
 
 questions = [
     "What is the main topic of this document?",
@@ -14,6 +14,8 @@ PROMPT = "default"
 
 for question in questions:
     print(f"Q: {question}")
-    answer = query(question, prompt_name=PROMPT)
-    print(f"A: {answer}")
+    result = query(index, question, prompt_name=PROMPT)
+    print(f"A: {result['answer']}")
+    for i, source in enumerate(result["sources"], start=1):
+        print(f"   [{i}] page {source['page']}")
     print("-" * 60)

@@ -10,9 +10,6 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from src.pipeline import ingest, query
-from src.embedder import embed
-from src.vectorstore import search
-from src.reranker import rerank
 from eval.metrics import evaluate_sample, citation_rate
 
 DATASET_PATH = "eval/dataset.json"
@@ -41,20 +38,17 @@ def run():
     samples = dataset[:MAX_SAMPLES] if MAX_SAMPLES else dataset
     print(f"Evaluating {len(samples)} samples...")
 
-    ingest(PDF_PATH)
+    index = ingest(PDF_PATH)
 
     results = []
     answers = []
 
     for i, item in enumerate(samples):
         question = item["question"]
-        answer = query(question)
+        result = query(index, question)
+        answer = result["answer"]
         answers.append(answer)
-
-        # Get context chunks used for this answer (re-run retrieval)
-        q_emb = embed([question])[0]
-        candidates = search(q_emb, question, n_results=10)
-        top_chunks = rerank(question, candidates, top_k=3)
+        top_chunks = [c["text"] for c in result["sources"]]
 
         scores = evaluate_sample(question, answer, top_chunks)
         results.append({

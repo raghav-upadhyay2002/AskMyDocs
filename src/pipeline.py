@@ -1,29 +1,38 @@
-from src.loader import import_file
-from src.chunker import chunk_text
+from src.loader import load_pages
+from src.chunker import chunk_pages
 from src.embedder import embed
-from src.vectorstore import add_chunks, search
+from src.vectorstore import HybridIndex
 from src.reranker import rerank
 from src.llm import ask
 from src.prompts import DEFAULT_PROMPT
 
 
 def ingest(pdf_path):
-    text = import_file(pdf_path)
-    chunks = chunk_text(text)
-    embeddings = embed(chunks)
-    add_chunks(chunks, embeddings)
+    """PDF → page-tagged chunks → embeddings → hybrid index. Returns the index."""
+    chunks = chunk_pages(load_pages(pdf_path))
+    if not chunks:
+        raise ValueError("No extractable text found in this PDF — it may be a scanned image.")
+    index = HybridIndex(chunks, embed([c["text"] for c in chunks]))
     print(f"Ingested {len(chunks)} chunks from {pdf_path}")
+    return index
 
 
-def query(question, prompt_name=DEFAULT_PROMPT):
-    # Embed question
-    question_embedding = embed([question])[0]
+def retrieve(index, question, n_candidates=10, top_k=3):
+    # Hybrid search: vector + BM25, returns top n_candidates
+    candidates = index.search(embed([question])[0], question, n_results=n_candidates)
 
-    # Hybrid search: vector + BM25, returns top 10 candidates
-    candidates = search(question_embedding, question, n_results=10)
+    # Rerank candidates, keep top_k
+    return rerank(question, candidates, top_k=top_k)
 
-    # Rerank candidates, keep top 3
-    top_chunks = rerank(question, candidates, top_k=3)
+
+def query(index, question, prompt_name=DEFAULT_PROMPT, api_key=None):
+    """Answer a question about an ingested document.
+
+    Returns {"answer": str, "sources": [{"text", "page"}, ...]}, where sources[i]
+    is the chunk the answer cites as [i+1].
+    """
+    sources = retrieve(index, question)
 
     # Ask LLM with citations + hallucination check
-    return ask(question, top_chunks, prompt_name=prompt_name)
+    answer = ask(question, [c["text"] for c in sources], prompt_name=prompt_name, api_key=api_key)
+    return {"answer": answer, "sources": sources}

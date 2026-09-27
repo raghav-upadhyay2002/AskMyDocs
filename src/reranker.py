@@ -9,7 +9,9 @@ def get_model():
     return _model
 
 def rerank(question, chunks, top_k=3):
-    pairs = [(question, chunk) for chunk in chunks]
-    scores = get_model().predict(pairs)
-    ranked = sorted(zip(scores, chunks), reverse=True)
+    """Re-score chunks ({"text", "page"} dicts) with the cross-encoder and keep the best top_k."""
+    if not chunks:
+        return []
+    scores = get_model().predict([(question, chunk["text"]) for chunk in chunks])
+    ranked = sorted(zip(scores, chunks), key=lambda pair: pair[0], reverse=True)
     return [chunk for _, chunk in ranked[:top_k]]
