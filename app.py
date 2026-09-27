@@ -58,9 +58,9 @@ def _render_answer(answer):
     return body
 
 
-def _render_sources(sources, cited):
+def _render_sources(numbered_sources, cited):
     parts = []
-    for i, source in enumerate(sources, start=1):
+    for i, source in numbered_sources:
         snippet = " ".join(source["text"].split())
         if len(snippet) > 320:
             snippet = snippet[:320].rsplit(" ", 1)[0] + " …"
@@ -81,7 +81,7 @@ def _assistant(content, **metadata):
 
 def _error_message(e):
     if isinstance(e, RateLimitError):
-        return "⏳ This demo runs on a free Groq key and has hit its usage limit. Please try again in a minute."
+        return "⏳ This demo runs on a free Groq key and all its models are busy right now. Please try again in a minute."
     if isinstance(e, AuthenticationError):
         return "🔑 Groq rejected the app's API key — the `GROQ_API_KEY` setting needs updating."
     if isinstance(e, NotFoundError):
@@ -151,13 +151,16 @@ def respond(history, question, index, style):
         yield history + [_assistant(_error_message(e))]
         return
 
-    sources = result["sources"]
-    pages = ", ".join(str(p) for p in sorted({s["page"] for s in sources}))
+    # Show the passages the answer cites; if it cites none, show the top matches instead.
+    cited = cited_numbers(result["answer"])
+    numbered = list(enumerate(result["sources"], start=1))
+    shown = [(i, s) for i, s in numbered if i in cited] or numbered[:3]
+    pages = sorted({s["page"] for _, s in shown})
     yield history + [
         _assistant(_render_answer(result["answer"])),
         _assistant(
-            _render_sources(sources, cited_numbers(result["answer"])),
-            title=f"Sources · page{'s' * (len(sources) != 1)} {pages}",
+            _render_sources(shown, cited),
+            title=f"Sources · page{'s' * (len(pages) != 1)} {', '.join(map(str, pages))}",
             status="done",
             duration=round(time.time() - started, 1),
         ),

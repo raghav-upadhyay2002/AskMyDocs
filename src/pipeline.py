@@ -6,6 +6,10 @@ from src.reranker import rerank
 from src.llm import ask
 from src.prompts import DEFAULT_PROMPT
 
+# Documents up to this size are sent to the LLM whole (~3K tokens), so broad questions like
+# "summarize this" see everything rather than the few chunks that happen to match best.
+WHOLE_DOC_MAX_CHARS = 12_000
+
 
 def ingest(pdf_path):
     """PDF → page-tagged chunks → embeddings → hybrid index. Returns the index."""
@@ -31,7 +35,10 @@ def query(index, question, prompt_name=DEFAULT_PROMPT):
     Returns {"answer": str, "sources": [{"text", "page"}, ...]}, where sources[i]
     is the chunk the answer cites as [i+1].
     """
-    sources = retrieve(index, question)
+    if sum(len(c["text"]) for c in index.chunks) <= WHOLE_DOC_MAX_CHARS:
+        sources = index.chunks
+    else:
+        sources = retrieve(index, question)
 
     # Ask LLM with citations + hallucination check
     answer = ask(question, [c["text"] for c in sources], prompt_name=prompt_name)

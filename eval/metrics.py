@@ -8,10 +8,11 @@ citation_rate       — what % of answers include citations?
 import json
 import os
 import re
-from src.llm import MODEL, chat, cited_numbers
+from src.llm import chat, cited_numbers
 
-# Set JUDGE_MODEL to grade different answer models with the same judge.
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", MODEL)
+# Set JUDGE_MODEL to grade different answer models with the same judge. Unset, the judge
+# uses the app's model and falls back like the app does when it's rate-limited.
+JUDGE_MODEL = os.getenv("JUDGE_MODEL")
 
 
 def citation_rate(answers):
@@ -32,7 +33,7 @@ Question: {question}
 Context: {context}
 Answer: {answer}
 """
-    raw = chat(prompt, temperature=0.0, model=JUDGE_MODEL)
+    raw = chat(prompt, temperature=0.0, model=JUDGE_MODEL, max_wait=60)
     # Tolerate code fences or stray text around the JSON object
     match = re.search(r"\{.*\}", raw, re.DOTALL)
     return json.loads(match.group(0) if match else raw)

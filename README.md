@@ -26,6 +26,8 @@ Ask questions about any PDF and get answers with citations pulled directly from 
 - **Prompt versioning** — swap between `default`, `strict`, and `concise` prompt styles
 - **Web app** — chat UI with expandable sources; each browser session gets its own document index
 - **Swappable LLM** — any Groq chat model via the `GROQ_MODEL` env var (default `openai/gpt-oss-20b`)
+- **Rate-limit fallback** — if that model hits its free-tier limit, the next one in `GROQ_FALLBACK_MODELS` answers instead (each Groq model has its own quota)
+- **Whole-document mode** — short documents (up to ~12K characters, e.g. a resume) are sent to the LLM in full, so broad questions like "summarize this" cover everything
 - **Evaluation system** — automated quality checks with faithfulness, relevance, and citation rate metrics
 - **CI pipeline** — GitHub Actions fails the build if quality drops below thresholds
 
@@ -95,6 +97,8 @@ Question → embed → hybrid search (vector + BM25) → top 10 candidates
          → rerank with cross-encoder → top 3 chunks
          → send to the LLM with citation prompt → answer + sources (with page numbers)
 ```
+
+Short documents (≤ ~12K characters) skip search and reranking: every chunk goes to the LLM.
 
 ## Prompt versions
 

@@ -12,6 +12,17 @@ load_dotenv()
 # Groq retires models from time to time — override with GROQ_MODEL instead of editing code.
 MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
 
+# Each Groq model has its own free-tier quota, so when one is rate-limited the next is tried
+# right away instead of making the user wait. Comma-separated; set to "" to disable.
+FALLBACK_MODELS = [
+    m.strip()
+    for m in os.getenv("GROQ_FALLBACK_MODELS", "qwen/qwen3.8-27b,openai/gpt-oss-120b").split(",")
+    if m.strip() and m.strip() != MODEL
+]
+
+# Caps answer length (and so how much of the per-minute token quota one question can use).
+MAX_OUTPUT_TOKENS = 2048
+
 GROUNDING_WARNING = "⚠️ Warning: No citations found — answer may not be grounded in the document."
 
 # Matches [1], [2] and grouped forms like [1, 3].
@@ -32,28 +43,52 @@ def get_client():
     if _client is None:
         if not os.getenv("GROQ_API_KEY"):
             raise ValueError("GROQ_API_KEY is not set — add it to .env (or as a Space secret).")
-        _client = Groq(api_key=os.environ["GROQ_API_KEY"])
+        # Retries are handled in chat(); the SDK's own would silently wait on every 429.
+        _client = Groq(api_key=os.environ["GROQ_API_KEY"], max_retries=0)
     return _client
 
 
-def chat(prompt, temperature=0.1, model=None):
-    """Single-turn completion with retry/backoff on rate limits. Returns the reply text."""
-    model = model or MODEL
+def _complete(model, prompt, temperature):
     # gpt-oss models reason before answering; "low" keeps latency close to a non-reasoning model.
     extra = {"reasoning_effort": "low"} if model.startswith("openai/gpt-oss") else {}
-    for attempt in range(5):
-        try:
-            response = get_client().chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=temperature,
-                **extra,
-            )
-            return (response.choices[0].message.content or "").strip()
-        except RateLimitError:
-            if attempt == 4:
-                raise
-            time.sleep(5 * (attempt + 1))
+    response = get_client().chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=temperature,
+        max_completion_tokens=MAX_OUTPUT_TOKENS,
+        **extra,
+    )
+    return (response.choices[0].message.content or "").strip()
+
+
+def _retry_after(error):
+    try:
+        return float(error.response.headers.get("retry-after", 5))
+    except (TypeError, ValueError):
+        return 5.0
+
+
+def chat(prompt, temperature=0.1, model=None, max_wait=20):
+    """Single-turn completion. Returns the reply text.
+
+    On a rate limit, moves straight on to the next of FALLBACK_MODELS (unless a specific
+    `model` is requested). Only when every model is limited does it wait for the soonest
+    reset — and it gives up rather than wait more than `max_wait` seconds in total.
+    """
+    models = [model] if model else [MODEL, *FALLBACK_MODELS]
+    waited = 0.0
+    while True:
+        errors = []
+        for m in models:
+            try:
+                return _complete(m, prompt, temperature)
+            except RateLimitError as e:
+                errors.append(e)
+        wait = min(_retry_after(e) for e in errors)
+        if waited + wait > max_wait:
+            raise errors[0]
+        time.sleep(wait)
+        waited += wait
 
 
 def cited_numbers(answer):
