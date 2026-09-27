@@ -3,7 +3,7 @@ import os
 import time
 
 import gradio as gr
-from groq import APIConnectionError, APIStatusError, AuthenticationError, NotFoundError
+from groq import APIConnectionError, APIStatusError, AuthenticationError, NotFoundError, RateLimitError
 
 from src.embedder import get_model as load_embedder
 from src.llm import CITATION_RE, GROUNDING_WARNING, MODEL, cited_numbers
@@ -12,7 +12,7 @@ from src.prompts import DEFAULT_PROMPT
 from src.reranker import get_model as load_reranker
 
 SAMPLE_PDF = "data/sample.pdf"
-SERVER_HAS_KEY = bool(os.getenv("GROQ_API_KEY"))  # e.g. a Space secret or a local .env
+HAS_KEY = bool(os.getenv("GROQ_API_KEY"))  # from .env locally, or a Space secret when deployed
 
 STYLES = [
     ("Strict — every sentence cited", "strict"),
@@ -80,8 +80,10 @@ def _assistant(content, **metadata):
 
 
 def _error_message(e):
+    if isinstance(e, RateLimitError):
+        return "⏳ This demo runs on a free Groq key and has hit its usage limit. Please try again in a minute."
     if isinstance(e, AuthenticationError):
-        return "🔑 Groq rejected that API key. Double-check it at [console.groq.com/keys](https://console.groq.com/keys)."
+        return "🔑 Groq rejected the app's API key — the `GROQ_API_KEY` setting needs updating."
     if isinstance(e, NotFoundError):
         return f"🧩 The model `{MODEL}` isn't available on Groq anymore. Set the `GROQ_MODEL` environment variable to a current model."
     if isinstance(e, APIConnectionError):
@@ -129,23 +131,22 @@ def add_example(history, evt: gr.SelectData):
     return add_question(evt.value["text"], history)
 
 
-def respond(history, question, index, api_key, style):
+def respond(history, question, index, style):
     if not question:
         yield history
         return
     if index is None:
         yield history + [_assistant("📄 Upload a PDF (or click **Try the sample paper**) first, then ask away.")]
         return
-    api_key = (api_key or "").strip() or None
-    if api_key is None and not SERVER_HAS_KEY:
-        yield history + [_assistant("🔑 Add your Groq API key in the panel on the left — it's free at [console.groq.com](https://console.groq.com/keys).")]
+    if not HAS_KEY:
+        yield history + [_assistant("🔑 No Groq API key configured. Set `GROQ_API_KEY` in `.env` (local) or as a Space secret.")]
         return
 
     yield history + [_assistant("", title="Searching the document…", status="pending")]
 
     started = time.time()
     try:
-        result = query(index, question, prompt_name=style, api_key=api_key)
+        result = query(index, question, prompt_name=style)
     except Exception as e:
         yield history + [_assistant(_error_message(e))]
         return
@@ -267,15 +268,7 @@ with gr.Blocks(title="AskMyDocs") as demo:
             sample_btn = gr.Button("Try the sample paper", size="sm", variant="secondary")
             doc_status = gr.HTML(EMPTY_STATUS)
 
-            gr.Markdown("2 · Groq API key", elem_classes="step")
-            api_key = gr.Textbox(
-                show_label=False,
-                type="password",
-                placeholder="Optional — using the server's key" if SERVER_HAS_KEY else "gsk_…",
-                info="Free at console.groq.com. Only sent to Groq, never saved.",
-            )
-
-            gr.Markdown("3 · Answer style", elem_classes="step")
+            gr.Markdown("2 · Answer style", elem_classes="step")
             style = gr.Radio(STYLES, value=DEFAULT_PROMPT, show_label=False)
 
             gr.HTML(
@@ -324,7 +317,7 @@ with gr.Blocks(title="AskMyDocs") as demo:
     ]
     for event in asked:
         event.then(
-            respond, [chatbot, pending_question, index_state, api_key, style], chatbot, concurrency_limit=8
+            respond, [chatbot, pending_question, index_state, style], chatbot, concurrency_limit=8
         ).then(lambda: gr.update(interactive=True), None, question, queue=False)
 
     clear_btn.click(lambda: [], None, chatbot, queue=False)
