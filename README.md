@@ -79,6 +79,8 @@ Groq retires models from time to time. If answers start failing with a "model no
 echo "GROQ_MODEL=openai/gpt-oss-120b" >> .env
 ```
 
+**Deploying to Hugging Face Spaces:** add `GROQ_API_KEY` as a secret under the Space's *Settings → Variables and secrets*. The app reads the key from there, so visitors never need their own — and it never appears in the code.
+
 ## How it works
 
 **Ingestion (run once per document):**

@@ -25,7 +25,7 @@ def retrieve(index, question, n_candidates=10, top_k=3):
     return rerank(question, candidates, top_k=top_k)
 
 
-def query(index, question, prompt_name=DEFAULT_PROMPT, api_key=None):
+def query(index, question, prompt_name=DEFAULT_PROMPT):
     """Answer a question about an ingested document.
 
     Returns {"answer": str, "sources": [{"text", "page"}, ...]}, where sources[i]
@@ -34,5 +34,5 @@ def query(index, question, prompt_name=DEFAULT_PROMPT, api_key=None):
     sources = retrieve(index, question)
 
     # Ask LLM with citations + hallucination check
-    answer = ask(question, [c["text"] for c in sources], prompt_name=prompt_name, api_key=api_key)
+    answer = ask(question, [c["text"] for c in sources], prompt_name=prompt_name)
     return {"answer": answer, "sources": sources}

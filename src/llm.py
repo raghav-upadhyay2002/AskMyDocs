@@ -1,7 +1,6 @@
 import os
 import re
 import time
-from functools import lru_cache
 
 from dotenv import load_dotenv
 from groq import Groq, RateLimitError
@@ -25,27 +24,27 @@ _NATIVE_CITATION_RE = re.compile(r"【\s*(\d+(?:\s*,\s*\d+)*)[^】]*】")
 _DECLINE_PREFIXES = ("not found", "i don't have enough information")
 
 
-@lru_cache(maxsize=64)
-def _client_for(api_key):
-    return Groq(api_key=api_key)
+_client = None
 
 
-def get_client(api_key=None):
-    """Groq client for the given key, falling back to GROQ_API_KEY from the environment."""
-    key = (api_key or os.getenv("GROQ_API_KEY") or "").strip()
-    if not key:
-        raise ValueError("No Groq API key provided. Set GROQ_API_KEY or pass api_key.")
-    return _client_for(key)
+def get_client():
+    global _client
+    if _client is None:
+        if not os.getenv("GROQ_API_KEY"):
+            raise ValueError("GROQ_API_KEY is not set — add it to .env (or as a Space secret).")
+        _client = Groq(api_key=os.environ["GROQ_API_KEY"])
+    return _client
 
 
-def chat(prompt, temperature=0.1, api_key=None):
+def chat(prompt, temperature=0.1, model=None):
     """Single-turn completion with retry/backoff on rate limits. Returns the reply text."""
+    model = model or MODEL
     # gpt-oss models reason before answering; "low" keeps latency close to a non-reasoning model.
-    extra = {"reasoning_effort": "low"} if MODEL.startswith("openai/gpt-oss") else {}
+    extra = {"reasoning_effort": "low"} if model.startswith("openai/gpt-oss") else {}
     for attempt in range(5):
         try:
-            response = get_client(api_key).chat.completions.create(
-                model=MODEL,
+            response = get_client().chat.completions.create(
+                model=model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=temperature,
                 **extra,
@@ -75,12 +74,12 @@ def _is_decline(answer):
     return answer.lower().replace("’", "'").startswith(_DECLINE_PREFIXES)
 
 
-def ask(question, context_chunks, prompt_name=DEFAULT_PROMPT, api_key=None):
+def ask(question, context_chunks, prompt_name=DEFAULT_PROMPT):
     context = _build_context(context_chunks)
     template = PROMPTS[prompt_name]
     prompt = template.format(context=context, question=question)
 
-    answer = chat(prompt, temperature=0.1, api_key=api_key)
+    answer = chat(prompt, temperature=0.1)
     answer = _NATIVE_CITATION_RE.sub(r"[\1]", answer)
 
     if not _is_grounded(answer, context_chunks) and not _is_decline(answer):

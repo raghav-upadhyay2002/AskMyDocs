@@ -327,4 +327,5 @@ if __name__ == "__main__":
     # Load both local models up front so the first question isn't slow.
     load_embedder()
     load_reranker()
-    demo.launch(theme=THEME, css=CSS)
+    # Spaces turn on SSR by default, which skips Gradio's scoped copy of the custom CSS.
+    demo.launch(theme=THEME, css=CSS, ssr_mode=False)
